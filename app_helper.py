@@ -239,7 +239,11 @@ class AppHelper:
 
     def all_tests(self, batch):
         if batch not in self.alltests_cache:
-            print(f"alltests[{batch}] is not cached. This should only happen once.")
+            # Log when cache miss occurs (should only happen once per batch)
+            import logging
+
+            logger = logging.getLogger(__name__)
+            logger.debug(f"Cache miss for batch '{batch}' - loading from disk")
             if batch == "chronological" or batch == "reverse":
                 test_list = next(walk(join("static", "report")))[1]
                 # walk gives (dirpath, dirnames, filenames). We only want dirnames, hence the [1]
@@ -335,31 +339,12 @@ class AppHelper:
                 self.alltests_cache["foreign"] = foreign_gibberish
 
             elif batch == "interesting":
-                # Hand-picked interesting tests - high confidence, large effect sizes, etc.
-                interesting_tests = [
-                    "1366633701Bolding",  # High confidence bolding test
-                    "1366633701TranslateRUru",  # Russian translation test
-                    "1366633701Translateit",  # Italian translation test
-                    "1366634069Bolding",  # Another bolding test
-                    "1366635965Banner.design",  # Banner design test
-                    "1366636027Banner.design",  # Another banner test
-                    "1366637220askString",  # Ask string test
-                    "1366637397firstSentence",  # First sentence test
-                    "1366638504icon",  # Icon test
-                    "1366642072var",  # Variable test
-                    "1366642192buttonText",  # Button text test
-                    "1366642279tabText",  # Tab text test
-                    "1366642382askString",  # Another ask string test
-                    "1366645458color",  # Color test
-                    "1366645609color",  # Another color test
-                    "1366645732color",  # Third color test
-                    "1366650515dropdown.format",  # Dropdown format test
-                    "1366650784dropdown.type",  # Dropdown type test
-                    "1366650867do.we.mention.this.is.tax.deductable",  # Tax deductible test
-                    "1366652971var",  # Another variable test
-                    "1366653155var",  # Third variable test
-                    "1366653283useful",  # Useful test
-                ]
+                # Get interesting tests from config instead of hardcoded list
+                try:
+                    interesting_tests = self.app.config.get("INTERESTING_TESTS", [])
+                except AttributeError:
+                    # Fallback if config is not available
+                    interesting_tests = []
 
                 # Filter to only include tests that actually exist
                 existing_tests = []
@@ -379,7 +364,13 @@ class AppHelper:
 
                     self.alltests_cache[batch] = test_list
                 except FileNotFoundError:
-                    print("input order wrong")
+                    # Log the error and provide a more descriptive message
+                    import logging
+
+                    logger = logging.getLogger(__name__)
+                    logger.warning(
+                        f"Batch order file not found for '{batch}': {filename}"
+                    )
                     self.alltests_cache[batch] = []
 
         return self.alltests_cache[batch]
@@ -390,6 +381,8 @@ class AppHelper:
             return False
         return True
 
+    #############
+    #############
     #############
     #############
     #############

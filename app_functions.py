@@ -12,6 +12,9 @@
 from flask import render_template
 from os.path import join
 import csv
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class AppFunctions:
@@ -225,8 +228,7 @@ class AppFunctions:
                     result["loser"] = winner_row["loser"]
                     allresults[test] = result
             except Exception as e:
-                # Log error and continue with other tests
-                print(f"Error processing test {test}: {e}")
+                logger.error(f"Error processing test {test}: {e}")
                 continue
 
         if MODE == "NOGUESS":
@@ -247,13 +249,13 @@ class AppFunctions:
                 allvarnames=allvarnames,
             )
         except Exception as e:
-            # One of the tests doesn't work and it's throwing everything off.
-            print(f"Template rendering error: {e}")
+            logger.error(f"Template rendering error: {e}")
             return (
                 render_template(
                     "error.html",
-                    why="Sorry, there was a problem. At least one test has bad data. Sorry.",
-                    title="Oops",
+                    batch=batch,
+                    why="Error rendering template",
+                    title="Error",
                 ),
-                404,
+                500,
             )

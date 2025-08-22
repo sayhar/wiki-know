@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import url_for as local_url_for
 from flask import render_template
+import logging
 
 # Make S3 optional for local development
 try:
@@ -27,7 +28,8 @@ import app_helper
 
 
 MODES = ["GUESS", "NOGUESS"]
-print("HELLO")
+logger = logging.getLogger(__name__)
+logger.info("HELLO")
 
 
 def setup(debug=False):
@@ -53,6 +55,7 @@ try:
     app.config["BASIC_AUTH_USERNAME"] = config.get("basicauth_name", "")
     app.config["BASIC_AUTH_PASSWORD"] = config.get("basicauth_password", "")
     app.config["USE_S3_DEBUG"] = False
+    app.config["INTERESTING_TESTS"] = config.get("interesting_tests", [])
 
     # Flask-S3 configuration
     if config.get("bucketname"):
@@ -70,17 +73,17 @@ try:
         app.config["BASIC_AUTH_FORCE"] = True
         basic_auth = BasicAuth(app)
     else:
-        print("Warning: Flask-BasicAuth not available, authentication disabled")
+        logger.warning("Flask-BasicAuth not available, authentication disabled")
 
     # Only set up S3 if available
     if S3_AVAILABLE and config.get("bucketname"):
         s3 = FlaskS3(app)
     else:
         s3 = False
-        print("Warning: Flask-S3 not available or no bucket configured, S3 disabled")
+        logger.warning("Flask-S3 not available or no bucket configured, S3 disabled")
 
 except Exception as e:
-    print(f"Config loading error: {e}")
+    logger.error(f"Config loading error: {e}")
     s3 = False
     MODE = MODES[0]
 
@@ -102,7 +105,7 @@ def welcome():
     return render_template("welcome.html")
 
 
-@app.route("/dir/", defaults={"batch": "chronological"})
+@app.route("/dir/", defaults={"batch": "descending"})
 @app.route("/dir/<batch>")
 def go_dir(batch):
     if MODE in MODES:
@@ -130,7 +133,7 @@ def page_not_found(e):
     )
 
 
-@app.route("/show/", defaults={"batch": "chronological", "testname": None})
+@app.route("/show/", defaults={"batch": "descending", "testname": None})
 @app.route("/show/<batch>/", defaults={"testname": None})
 @app.route("/show/<batch>/<testname>")
 def go_test(batch, testname):
