@@ -1,16 +1,104 @@
-# Python-generated files
+# Python
 __pycache__/
-*.py[oc]
+*.py[cod]
+*$py.class
+*.so
+.Python
 build/
+develop-eggs/
 dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
 wheels/
-*.egg-info
-.mypy_cache/
-
-# Secrets
-config.json
-crash.log
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
 # Virtual environments
+.env
 .venv
-node_modules
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Flask
+instance/
+.webassets-cache
+
+# Migration files (temporary/progress files)
+migration/migration_progress.json
+migration/migration_report.json
+migration/imgur_to_s3_lookup.json
+migration/imgur_migration.log
+migration/migration_report.json
+
+# Root-level migration and log files
+imgur_migration.log
+migration_report.json
+crash.log
+
+# AWS credentials (security)
+.aws/
+aws_credentials.txt
+*.pem
+
+# Configuration files with secrets
+config.json
+
+# Example config (safe to commit)
+!config.example.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json

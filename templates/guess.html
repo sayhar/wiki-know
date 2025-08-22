@@ -52,12 +52,45 @@
   $('.screenshot-glue').click(function(){$(this).parent().children('.screenshot-hide').slideToggle('slow')}) 
 </script>
 <script type="text/javascript">
-click_to_zoom = function(){
-  that = $(this).clone()
-  $.colorbox({html:that, width:"85%"});
+// Simple image zoom modal
+function showImageModal(imgSrc) {
+  // Create modal HTML
+  const modal = document.createElement('div');
+  modal.className = 'image-modal';
+  modal.innerHTML = `
+    <div class="image-modal-content">
+      <span class="image-modal-close">&times;</span>
+      <img src="${imgSrc}" alt="Zoomed image" style="max-width: 100%; max-height: 90vh;">
+    </div>
+  `;
+  
+  // Add to page
+  document.body.appendChild(modal);
+  
+  // Close on click
+  modal.onclick = function() {
+    document.body.removeChild(modal);
+  };
+  
+  // Close on X click
+  modal.querySelector('.image-modal-close').onclick = function(e) {
+    e.stopPropagation();
+    document.body.removeChild(modal);
+  };
+  
+  // Close on Escape key
+  document.addEventListener('keydown', function closeOnEscape(e) {
+    if (e.key === 'Escape') {
+      document.body.removeChild(modal);
+      document.removeEventListener('keydown', closeOnEscape);
+    }
+  });
 }
 
-$('.screenshot').click(click_to_zoom)
+// Attach click handlers to all screenshots
+$('.screenshot').click(function() {
+  showImageModal(this.src);
+});
 </script>
 <script type="text/javascript">
   $(document).keypress(function(e) {

@@ -53,6 +53,13 @@ try:
     app.config["BASIC_AUTH_USERNAME"] = config.get("basicauth_name", "")
     app.config["BASIC_AUTH_PASSWORD"] = config.get("basicauth_password", "")
     app.config["USE_S3_DEBUG"] = False
+
+    # Flask-S3 configuration
+    if config.get("bucketname"):
+        app.config["FLASKS3_ACTIVE"] = True
+        app.config["FLASKS3_DEBUG"] = True
+        app.config["FLASKS3_USE_HTTPS"] = True
+        app.config["FLASKS3_BUCKET_DOMAIN"] = "s3.us-east-1.amazonaws.com"
     if "mode" in config:
         MODE = config["mode"]
     else:
@@ -175,7 +182,7 @@ def go_test(batch, testname):
         )
 
 
-@app.route("/show/<batch>/<testname>/result/<guess>")
+@app.route("/show/<batch>/<testname>/result/<path:guess>")
 def go_result(batch, testname, guess):
     if not h.test_in_batch(testname, batch):
         return (

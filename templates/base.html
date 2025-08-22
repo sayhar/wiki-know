@@ -2,7 +2,7 @@
 <html>
 <head>
   <!-- by Sahar Massachi
-  2013 
+  2013, updated 2025
 
   Code: AGPLv3
   Data: CC-Attribution-Share_alike 3.0
@@ -13,13 +13,51 @@
 
   Thanks to the Wikimedia Fundraising team for their valuable work.
 
-  Shoutout to David Baumgold and Yale Spector, two gentlemen who were handy with tips and advice whenever this author needed it. 
+  Shoutout to David Baumgold and Yale Spector, both handy with tips and advice whenever this author needed it. 
 
 -->
 <link rel="stylesheet" href="{{ local_url_for('static', filename='css/bootstrap.min.css') }}" media="screen">
 <link href="{{ local_url_for('static', filename='css/bootstrap-responsive.min.css') }}" media="screen" rel="stylesheet">
 <link rel="stylesheet" href="{{ local_url_for('static', filename='css/style.css') }}">
-<link rel="stylesheet" href="{{ local_url_for('static', filename='css/colorbox.css') }}">
+    <style>
+      /* Image modal styles */
+      .image-modal {
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .image-modal-content {
+        position: relative;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 90%;
+        max-height: 90%;
+        overflow: auto;
+      }
+      
+      .image-modal-close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #aaa;
+      }
+      
+      .image-modal-close:hover {
+        color: #000;
+      }
+    </style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 

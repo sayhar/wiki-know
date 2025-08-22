@@ -1,0 +1,28 @@
+{
+    "bucketname": "your-s3-bucket-name",
+    "basicauth_name": "your-username",
+    "basicauth_password": "your-password",
+    "mode": "GUESS",
+    "interesting_tests": [
+        "1379238463appealby",
+        "1371510370bolding",
+        "1366637514firstSentence",
+        "1369127471landing_m2",
+        "B13_120614_txt",
+        "1366633266DblinCntrlNLnl",
+        "B13_1119_clr",
+        "B13_0701_trntab_ts",
+        "B13_0701_trnvlpf",
+        "B13_120416_txt",
+        "1379000758facing_m2",
+        "1378999673whichfacts",
+        "1369231631banner_m1",
+        "1379339391globe",
+        "B14_0305_enTH_ifamt_50_100",
+        "1379021716banner",
+        "B13_121022_sld",
+        "1379239850parenShell",
+        "B13_0711_adywdp",
+        "1366636027Banner.design"
+    ]
+}

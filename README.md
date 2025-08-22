@@ -2,35 +2,39 @@
 
 This is a modernized version of the original wiki-guess application, updated for Python 3 and modern Flask practices.
 
-## Installation
+## Setup
 
-### Minimal Installation (Local Development)
-
-```bash
-pip install -r requirements-minimal.txt
-```
-
-### Full Installation (Production with S3)
+### 1. Install Dependencies
 
 ```bash
-pip install -r requirements.txt
+uv sync
 ```
 
-## Running the Application
+### 2. Configuration
 
-### Basic Test
-
-First, test that the modernized code works:
+Copy the example configuration and customize it:
 
 ```bash
-python3 test_basic.py
+cp config.example.json config.json
 ```
 
-### Run the Flask App
+Edit `config.json` with your settings:
+
+- `bucketname`: Your S3 bucket name
+- `basicauth_name`: Username for BasicAuth
+- `basicauth_password`: Password for BasicAuth
+- `mode`: Application mode (default: "GUESS")
+- `interesting_tests`: List of test IDs to highlight
+
+### 3. Run the Application
 
 ```bash
-python3 hello.py
+uv run python hello.py
 ```
+
+The app will be available at `http://127.0.0.1:5000`
+
+## Features
 
 The application will be available at `http://localhost:5000`
 

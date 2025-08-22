@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import csv
-from os.path import isfile, join
+from os.path import isfile, join, basename
 from os import walk
 import urllib.request
 import urllib.error
@@ -192,21 +192,40 @@ class AppHelper:
             desc = self._real_value(varname, dirname)
             longnames[varname] = desc  # No need for decode in Python 3
             thisshot = line[3]
+
+            # Get testname from the directory
+            testname = basename(dirname)
+
+            # Convert imgur URLs to S3 URLs with fallback logic
+            if thisshot != "NA" and thisshot.startswith("http://i.imgur.com"):
+                thisshot = self._get_s3_screenshot_url(thisshot, testname, varname)
+            elif thisshot != "NA" and not thisshot.startswith("http://i.imgur.com"):
+                # Non-imgur URLs should be left unchanged
+                pass
+
             if line[1] in screenshots:
                 if thisshot != "NA":
                     if thisshot not in screenshots[varname]:
                         screenshots[varname].append(thisshot)
                     if line[4] != "NA":
                         manytype = "combo"
-                        if line[4] not in screenshots[varname]:
-                            screenshots[varname].append(line[4])
+                        extra_shot = line[4]
+                        # Convert extra screenshot URLs too
+                        if extra_shot.startswith("http://i.imgur.com"):
+                            extra_shot = self._get_s3_imgur_fallback_url(extra_shot)
+                        if extra_shot not in screenshots[varname]:
+                            screenshots[varname].append(extra_shot)
                     # screenshots[varname] = list(set(screenshots[varname]))
             else:
                 if thisshot != "NA":
                     screenshots[varname] = [thisshot]
                     if line[4] != "NA":
                         manytype = "combo"
-                        screenshots[varname].append(line[4])
+                        extra_shot = line[4]
+                        # Convert extra screenshot URLs too
+                        if extra_shot.startswith("http://i.imgur.com"):
+                            extra_shot = self._get_s3_imgur_fallback_url(extra_shot)
+                        screenshots[varname].append(extra_shot)
                 else:
                     # screenshot missing
                     screenshots[varname] = []
@@ -569,6 +588,74 @@ class AppHelper:
             # if(not exists):
             # 	self.NOSHOT = local_self.url_for('static', filename='img/noshot.gif')
         return self.NOSHOT
+
+    def _get_s3_screenshot_url(self, imgur_url, testname, value):
+        """
+        Get S3 screenshot URL with fallback logic:
+        1. Try screenshotsClean first
+        2. Fallback to screenshotsImgur
+        3. Final fallback to original imgur URL
+        """
+        try:
+            from urllib.parse import urlparse
+            import os
+
+            # Extract imgur filename from URL
+            parsed = urlparse(imgur_url)
+            imgur_filename = os.path.basename(parsed.path)
+
+            # Try screenshotsClean first (organized structure)
+            clean_url = f"https://wikitoy.s3.us-east-1.amazonaws.com/screenshotsClean/{testname}/{value}.png"
+
+            # Check if screenshotsClean exists by making a HEAD request
+            if self._check_s3_url_exists(clean_url):
+                return clean_url
+
+            # Fallback to screenshotsImgur
+            imgur_s3_url = f"https://wikitoy.s3.us-east-1.amazonaws.com/screenshotsImgur/{imgur_filename}"
+            if self._check_s3_url_exists(imgur_s3_url):
+                return imgur_s3_url
+
+            # Final fallback to original imgur URL
+            return imgur_url
+
+        except Exception:
+            # Fallback to original imgur URL
+            return imgur_url
+
+    def _check_s3_url_exists(self, url):
+        """
+        Check if an S3 URL exists by making a HEAD request
+        """
+        try:
+            import urllib.request
+
+            req = urllib.request.Request(url, method="HEAD")
+            with urllib.request.urlopen(req, timeout=5) as response:
+                return response.status == 200
+        except Exception:
+            return False
+
+    def _get_s3_imgur_fallback_url(self, imgur_url):
+        """
+        Generate screenshotsImgur fallback URL
+        """
+        try:
+            from urllib.parse import urlparse
+            import os
+
+            # Extract imgur filename from URL
+            parsed = urlparse(imgur_url)
+            imgur_filename = os.path.basename(parsed.path)
+
+            # Generate screenshotsImgur URL
+            imgur_s3_url = f"https://wikitoy.s3.us-east-1.amazonaws.com/screenshotsImgur/{imgur_filename}"
+
+            return imgur_s3_url
+
+        except Exception:
+            # Fallback to original imgur URL
+            return imgur_url
 
     def _diagnostic_types(self, testname):
         type_re = r"diagnostic_(?P<type>.*)_[0-9]*\.jpeg$"
