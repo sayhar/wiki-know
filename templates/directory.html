@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="displayrow row-fluid">
+	<div class="span12">
+		<table class="table-striped table-hover">
+			{% block rows %}
+			{% endblock %}
+		</table>
+	</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+click_to_zoom = function(event){
+  var url = event.target.src
+  var img= document.createElement('img');
+  img.src= url;
+  $.colorbox({html:img, width:"85%"});
+}
+
+
+$('.dir_thumb').click(click_to_zoom)
+</script>
+{% endblock %}

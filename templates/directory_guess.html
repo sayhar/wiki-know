@@ -1,0 +1,36 @@
+{% extends "directory.html" %}
+{% block rows %}
+	{% for test in list %}
+	<tr class="dir_row">
+	<td>
+	<h4>				
+		<a href="{{ url_for('go_test', batch=batch,testname=test) }}" id="{{ test }}">{{ allvarnames[test] }}
+		</a>
+	</h4>
+	</td>
+	<td>
+	<h5>
+	{{ alldates[test] }}
+	</h5>
+	</td>
+	{% for value in allshots[test] %}
+	<td>
+		<h5>{{ allnames[test][value] }}<h5>
+			<br/> 
+			<img class="dir_thumb" src="{{ allshots[test][value][0] }}"></img>
+	</td>
+	{% endfor %}
+	
+	<td>
+		<h5>
+			<strong>Campaign:</strong>
+			<p>
+			{{ allresults[test]['campaign']}}
+			</p>
+		</h5>
+	</td>
+	
+	</h5>
+	</tr>
+	{% endfor %}
+{% endblock %}
