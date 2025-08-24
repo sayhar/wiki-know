@@ -238,52 +238,115 @@ class AppHelper:
         return screenshots, longnames, manytype
 
     def all_tests(self, batch):
-        if batch not in self.alltests_cache:
-            # Log when cache miss occurs (should only happen once per batch)
+        # Only cache chronological data once
+        if "chronological" not in self.alltests_cache:
+            # Process the base chronological data once
             import logging
+            from concurrent.futures import ThreadPoolExecutor
+            import threading
 
             logger = logging.getLogger(__name__)
-            logger.debug(f"Cache miss for batch '{batch}' - loading from disk")
-            if batch == "chronological" or batch == "reverse":
-                test_list = next(walk(join("static", "report")))[1]
-                # walk gives (dirpath, dirnames, filenames). We only want dirnames, hence the [1]
-                # metas = glob(join("static", "report", "*","meta.csv"))
-                time_dict = dict()
-                for testname in test_list:
+            logger.info(
+                f"Building chronological data - will be used for both chronological and reverse"
+            )
+
+            # Process test directories in parallel for much better performance
+            logger.info("Starting parallel processing of test directories...")
+            time_dict = {}
+
+            try:
+                # Use glob instead of walk to avoid potential hanging issues
+                import os
+
+                logger.info("Getting test directories with glob...")
+                test_dirs = glob(join("static", "report", "*"))
+                logger.info(f"Glob returned {len(test_dirs)} items")
+                test_list = [d.split("/")[-1] for d in test_dirs if os.path.isdir(d)]
+                logger.info(f"Found {len(test_list)} test directories to process")
+            except Exception as e:
+                logger.error(f"Error getting test list: {e}")
+                return []
+
+            def process_single_test(testname):
+                try:
                     m = join("static", "report", testname, "meta.csv")
+                    with open(m, "r") as fin:
+                        reader = csv.DictReader(fin)
+                        r = next(reader)
+                        time = int(r["time"])
+                        return time, testname
+                except Exception as e:
+                    logger.debug(f"Error processing test {testname}: {e}")
+                    return None
+
+            # Process tests in parallel with ThreadPoolExecutor
+            with ThreadPoolExecutor(max_workers=8) as executor:
+                futures = [
+                    executor.submit(process_single_test, testname)
+                    for testname in test_list
+                ]
+
+                # Collect all results first, then process them in order
+                results = []
+                completed = 0
+                for future in futures:
                     try:
-                        with open(m, "r") as fin:
-                            reader = csv.DictReader(fin)
-                            r = next(reader)
-                            time = int(r["time"])
-                            # avoid time collisions:
-                            inserted_yet = False
-                            while not inserted_yet:
-                                if time in time_dict and time_dict[time] != testname:
-                                    time += 1
-                                else:
-                                    # this is the money, right here. Insert the test into a dict where it's key is time of test, and value is testname
-                                    time_dict[time] = testname
-                                    inserted_yet = True
-                    except FileNotFoundError:
-                        pass
+                        result = future.result(timeout=5)  # 5 second timeout per test
+                        if result:
+                            results.append(result)
+                        completed += 1
+                        if completed % 50 == 0:
+                            logger.info(
+                                f"Processed {completed}/{len(test_list)} test directories"
+                            )
+                    except Exception as e:
+                        logger.error(f"Error in parallel processing: {e}")
+                        completed += 1
 
-                sorted_timekey_list = sorted(time_dict)
-                self.alltests_cache["chronological"] = []
-                for time in sorted_timekey_list:
-                    self.alltests_cache["chronological"].append(time_dict[time])
-                # reverse sort
-                sorted_timekey_list.sort(reverse=True)
-                self.alltests_cache["reverse"] = []
-                for time in sorted_timekey_list:
-                    self.alltests_cache["reverse"].append(time_dict[time])
+                # Now process results in chronological order
+                logger.info("Sorting results chronologically...")
+                results.sort(key=lambda x: x[0])  # Sort by timestamp
 
-            elif batch == "random":
+                # Build time_dict with proper ordering
+                for time, testname in results:
+                    # Handle time collisions
+                    while time in time_dict and time_dict[time] != testname:
+                        time += 1
+                    time_dict[time] = testname
+
+            logger.info(
+                f"Successfully processed {len(time_dict)} tests with valid meta.csv files"
+            )
+            if len(time_dict) == 0:
+                logger.error("No tests were processed successfully")
+                return []
+
+            logger.info("Building chronological batch...")
+            sorted_timekey_list = sorted(time_dict)
+            self.alltests_cache["chronological"] = []
+            for time in sorted_timekey_list:
+                self.alltests_cache["chronological"].append(time_dict[time])
+            logger.info(
+                f"Built chronological batch with {len(self.alltests_cache['chronological'])} tests"
+            )
+
+        # Now return the appropriate batch
+        if batch == "chronological":
+            return self.alltests_cache["chronological"]
+        elif batch == "reverse":
+            # Just return chronological data in reverse order
+            return list(reversed(self.alltests_cache["chronological"]))
+        else:
+            # Handle other batch types (random, ascending, descending, etc.)
+            if batch == "random" and batch not in self.alltests_cache:
                 test_list = next(walk(join("static", "report")))[1]
                 shuffle(test_list)
                 self.alltests_cache[batch] = test_list
 
-            elif batch == "ascending" or batch == "descending":
+            elif (
+                batch in ["ascending", "descending"]
+                and batch not in self.alltests_cache
+            ):
                 metas = glob(join("static", "report", "*", "meta.csv"))
                 tests = dict()
                 final_list = []
@@ -316,7 +379,7 @@ class AppHelper:
                 self.alltests_cache["descending"] = descending
                 self.alltests_cache["ascending"] = ascending
 
-            elif batch == "english" or batch == "foreign":
+            elif batch in ["english", "foreign"] and batch not in self.alltests_cache:
                 english_test_list = []
                 foreign_gibberish = []
                 chron = self.all_tests("chronological")
@@ -338,7 +401,7 @@ class AppHelper:
                 self.alltests_cache["english"] = english_test_list
                 self.alltests_cache["foreign"] = foreign_gibberish
 
-            elif batch == "interesting":
+            elif batch == "interesting" and batch not in self.alltests_cache:
                 # Get interesting tests from config instead of hardcoded list
                 try:
                     interesting_tests = self.app.config.get("INTERESTING_TESTS", [])
@@ -354,7 +417,7 @@ class AppHelper:
 
                 self.alltests_cache["interesting"] = existing_tests
 
-            else:
+            elif batch not in self.alltests_cache:
                 try:
                     test_list = []
                     filename = join("static", "order", batch + ".txt")
@@ -373,7 +436,12 @@ class AppHelper:
                     )
                     self.alltests_cache[batch] = []
 
-        return self.alltests_cache[batch]
+        # Return the appropriate batch
+        if batch in self.alltests_cache:
+            return self.alltests_cache[batch]
+        else:
+            logger.error(f"Unknown batch type: {batch}")
+            return []
 
     def test_in_batch(self, thistest, batch):
         alltests = self.all_tests(batch)
@@ -381,6 +449,14 @@ class AppHelper:
             return False
         return True
 
+    #############
+    #############
+    #############
+    #############
+    #############
+    #############
+    #############
+    #############
     #############
     #############
     #############

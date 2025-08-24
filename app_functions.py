@@ -202,12 +202,81 @@ class AppFunctions:
     def show_dir(self, batch, MODE):
         # show dirname
         # Depending on the mode, do or don't display certain bits.
-        showthese = self.h.all_tests(batch)
+
+        # Only support chronological and reverse for now
+        if batch not in ["chronological", "reverse"]:
+            logger.error(
+                f"Unsupported batch type: {batch}. Only 'chronological' and 'reverse' are supported."
+            )
+            return (
+                render_template(
+                    "error.html",
+                    batch=batch,
+                    why=f"Batch type '{batch}' not supported. Use 'chronological' or 'reverse'.",
+                    title="Unsupported Batch",
+                ),
+                400,
+            )
+
+        # Check if we have the base processed data cached
+        if (
+            hasattr(self, "_show_dir_base_cache")
+            and "base_data" in self._show_dir_base_cache
+        ):
+            logger.info(f"Using cached base data for {batch}")
+            base_data = self._show_dir_base_cache["base_data"]
+
+            # Reorder the data based on the batch
+            if batch == "reverse":
+                # Reverse the order of all the data
+                reordered_data = {
+                    "list": list(reversed(base_data["list"])),
+                    "allshots": {
+                        test: base_data["allshots"][test]
+                        for test in reversed(base_data["list"])
+                    },
+                    "allnames": {
+                        test: base_data["allnames"][test]
+                        for test in reversed(base_data["list"])
+                    },
+                    "alldates": {
+                        test: base_data["alldates"][test]
+                        for test in reversed(base_data["list"])
+                    },
+                    "allresults": {
+                        test: base_data["allresults"][test]
+                        for test in reversed(base_data["list"])
+                    },
+                    "allvarnames": {
+                        test: base_data["allvarnames"][test]
+                        for test in reversed(base_data["list"])
+                    },
+                }
+            else:
+                # Use chronological order (original order)
+                reordered_data = base_data
+
+            # Render template with reordered data
+            if MODE == "NOGUESS":
+                template = "directory_noguess.html"
+            else:
+                template = "directory_guess.html"
+
+            return render_template(template, mode=MODE, batch=batch, **reordered_data)
+
+        # If no base cache, process everything once
+        logger.info(f"Processing base data - this may take a while")
+
+        # Get chronological test list (this is now fast due to caching)
+        showthese = self.h.all_tests("chronological")
+
+        # Process all the expensive data once
         allshots = {}
         allnames = {}
         alldates = {}
         allresults = {}
         allvarnames = {}
+
         for test in showthese:
             winner_row, dirname = self.h.win_dir(test)
             try:
@@ -231,23 +300,47 @@ class AppFunctions:
                 logger.error(f"Error processing test {test}: {e}")
                 continue
 
+        # Cache the base processed data
+        base_data = {
+            "list": showthese,
+            "allshots": allshots,
+            "allnames": allnames,
+            "alldates": alldates,
+            "allresults": allresults,
+            "allvarnames": allvarnames,
+        }
+
+        if not hasattr(self, "_show_dir_base_cache"):
+            self._show_dir_base_cache = {}
+        self._show_dir_base_cache["base_data"] = base_data
+        logger.info("Cached base data")
+
+        # Now return the appropriate order
+        if batch == "reverse":
+            # Return reverse order
+            reordered_data = {
+                "list": list(reversed(showthese)),
+                "allshots": {test: allshots[test] for test in reversed(showthese)},
+                "allnames": {test: allnames[test] for test in reversed(showthese)},
+                "alldates": {test: alldates[test] for test in reversed(showthese)},
+                "allresults": {test: allresults[test] for test in reversed(showthese)},
+                "allvarnames": {
+                    test: allvarnames[test] for test in reversed(showthese)
+                },
+            }
+        else:
+            # Return chronological order
+            reordered_data = base_data
+
+        # Render template
         if MODE == "NOGUESS":
             template = "directory_noguess.html"
         else:
             template = "directory_guess.html"
 
         try:
-            return render_template(
-                template,
-                mode=MODE,
-                batch=batch,
-                list=showthese,
-                allshots=allshots,
-                allnames=allnames,
-                alldates=alldates,
-                allresults=allresults,
-                allvarnames=allvarnames,
-            )
+            result = render_template(template, mode=MODE, batch=batch, **reordered_data)
+            return result
         except Exception as e:
             logger.error(f"Template rendering error: {e}")
             return (

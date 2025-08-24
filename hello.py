@@ -48,6 +48,18 @@ if not app.debug:
     file_handler.setLevel(logging.WARNING)
     app.logger.addHandler(file_handler)
 
+    # Add console logging
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
+    console_handler.setFormatter(formatter)
+    app.logger.addHandler(console_handler)
+
+    # Also configure the root logger for other modules
+    logging.basicConfig(level=logging.INFO, handlers=[console_handler])
+
 try:
     with open("config.json", "r") as config_file:
         config = json.load(config_file)
@@ -105,7 +117,7 @@ def welcome():
     return render_template("welcome.html")
 
 
-@app.route("/dir/", defaults={"batch": "descending"})
+@app.route("/dir/", defaults={"batch": "reverse"})
 @app.route("/dir/<batch>")
 def go_dir(batch):
     if MODE in MODES:
@@ -133,7 +145,7 @@ def page_not_found(e):
     )
 
 
-@app.route("/show/", defaults={"batch": "descending", "testname": None})
+@app.route("/show/", defaults={"batch": "reverse", "testname": None})
 @app.route("/show/<batch>/", defaults={"testname": None})
 @app.route("/show/<batch>/<testname>")
 def go_test(batch, testname):
@@ -216,7 +228,7 @@ def go_result(batch, testname, guess):
 
 if __name__ == "__main__":
     app.debug = True
-    app.run()
+    app.run(port=5001)
     # app.run()
 
 
