@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct","campaign"
+"1366654154","var","0","YY","en","Blue.banner.with.text","Blue.banner.with.no.text",824,1.8e-53,755,892,651800,370,1351706400,"banner","1366654154var",0.013,0.0108,0.0151,934,779,1090,NA

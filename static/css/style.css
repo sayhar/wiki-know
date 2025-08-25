@@ -1,0 +1,120 @@
+/*guess.html*/
+.container-fluid {
+	margin: 0;
+	padding: 0;
+}
+
+.screenshot {
+	display: inline-block;
+	height: 50%;
+	width: 90%;
+	padding-bottom: 5%
+}
+
+.screenshot-glue{
+	
+}
+.screenshot-hide{
+
+}
+
+.welcome-header {
+	margin-top:100px;
+}
+
+.frontspan {
+	height: 150px;
+}
+
+.results-button {
+	width: 90%;
+}
+
+.sitename {
+	background-color: rgba(255,255,255,0.2);
+	padding: 10px;
+	border-radius: 3px;
+}
+
+.displayrow {
+	margin:20px;
+}
+
+.navbar-default .navbar-nav>li>a {
+	color: #18bc9c;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+	color: #fff;
+}
+
+.vs{
+	color:red;
+}
+
+#hints{
+	margin-top:4%;
+}
+
+/*result.html*/
+
+#result_one_word{
+	margin-top: 10%;
+}
+#result_info{
+	margin-top: 9%;
+}
+#results_buttonrow{
+	/*margin-top: 7%; */
+	margin-bottom: 0%;
+}
+.heygeeks {
+	margin-top:7%;
+}
+.moregeeks{
+	margin:3%;
+}
+.pamplona {
+	width: 100%;
+	height: auto;
+}
+
+/*error.html*/
+.errorshot {
+	width:50%;
+	height: auto;
+	max-width: 500px;
+	margin-top:5%;
+	margin-bottom: 5%;
+}
+
+/*base.html*/
+
+#footer{
+	margin-top: 5%;
+	background-color: #FFF7EB;
+	border-bottom: solid #FFF7EB; 1px;
+}
+
+.whowhathow{
+	
+}
+
+.whowhathow a:link, .whowhathow a:visited, .whowhathow a:hover, .whowhathow a:active {
+	color:#5E6A97;
+}
+
+
+#popup_content{
+	background:#032f;
+	margin:2%;
+}
+
+/*directory.html*/
+.dir_thumb{
+	max-width: 150px;
+}
+
+.dir_row td{
+	padding: 0 16px 0 16px;
+}

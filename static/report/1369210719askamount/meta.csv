@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct","campaign"
+"1369210719","askamount","0","US","yy","$10,.$20,.$35","$20,.$35,.$50",29.8,0.084,9.71,49.8,14959,247,1292860500,"landing","1369210719askamount",0.225,-0.0235,0.474,58.4,-6.09,123,NA

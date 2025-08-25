@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct"
+"B13_1004_revisited","pastcheck","0","YY","yy","best.of.2013.(so.far)","best.of.2012",472,9e-48,430,513,651600,434,1381155060,"banner","B13_1004_revisited",0.0105,0.00816,0.0128,467,364,570

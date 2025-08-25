@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct","campaign"
+"1371510372","ask","0","YY","en","Three","Coffee",17.6,1.2e-25,15.4,19.7,21366500,16875,1361906760,"banner","1371510372ask",5.65e-05,-0.000519,0.000632,0.557,-5.12,6.23,NA

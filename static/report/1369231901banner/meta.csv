@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct","campaign"
+"1369231901","banner","0","YY","yy","Jimmy","Kartika",42.6,1e-05,28.3,56.9,46900486,1943,1291156800,"banner","1369231901banner",0.000758,1.19e-05,0.0015,65.7,1.03,130,NA

@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct","campaign"
+"1379019413","twin","0","US","en","A","B",12.4,0.16,1.49,23.3,34903,616,1320719460,"landing","1379019413twin",-0.0283,-0.134,0.0777,-7.15,-33.9,19.6,NA

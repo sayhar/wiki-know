@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct","campaign"
+"1367832884","landing","2","YY","en","CIF","GS",6.67,0.5,-4.83,18.2,18571,517,1351260300,"combo","1367832884landing",0.0574,-0.101,0.216,10.8,-19,40.7,NA

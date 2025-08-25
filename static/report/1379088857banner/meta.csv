@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct","campaign"
+"1379088857","banner","0","YY","yy","Therm","Notherm",7.37,0.29,-1.36,16.1,5335909,927,1321904880,"banner","1379088857banner",7.66e-05,-0.000527,0.00068,2.35,-16.2,20.9,NA

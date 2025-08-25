@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct"
+"B13_0725_trn_nd_es","translated","0","YY","yy","Now.is.the.time.(spanish)","Control.(spanish)",8.91,0.0056,4.8,13,78165200,4272,1374790320,"banner","B13_0725_trn_nd_es",2.24e-05,-5.41e-05,9.9e-05,3.48,-8.42,15.4

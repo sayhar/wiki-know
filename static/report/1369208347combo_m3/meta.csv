@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct","campaign"
+"1369208347","combo","3","YY","yy","$5.3.line,.please.help","How.much.would.you.donate.w/.small.text",371,1.5e-32,331,411,2524307,341,1293484200,"combo","1369208347combo",0.0025,0.00139,0.00361,141,78.2,203,NA

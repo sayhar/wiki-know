@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct","campaign"
+"1366653417","var","0","US","en","""Second.column.text:.""""if.everyone.reading.this.gave.$5""""""","""Second.column.text.:""""if.everyone.reading.this.gave.$10""""""",10.2,0.00014,6.77,13.6,5101100,6223,1353177240,"banner","1366653417var",-0.00223,-0.00418,-0.000286,-10.7,-20,-1.37,NA

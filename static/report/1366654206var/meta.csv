@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct","campaign"
+"1366654206","var","0","YY","ja","Blue.banner","White.banner.with.personal.appeal.from.Jimmy",320,4.3e-35,287,353,340100,411,1351648920,"banner","1366654206var",0.0326,0.01,0.0551,279,86,472,NA

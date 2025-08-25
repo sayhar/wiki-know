@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct","campaign"
+"1369213022","shirtcolor","2","YY","yy","blue","black",4.31,0.44,-2.67,11.3,12642334,1409,1292641800,"banner","1369213022shirtcolor",0.00159,-0.00155,0.00472,59.7,-58.3,178,NA

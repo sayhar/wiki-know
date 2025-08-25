@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct"
+"B13_1023_dr","caps","0","YY","yy","Capitalized","Lowercase",8.12,0.05,2.87,13.4,2603700,2588,1382557740,"banner","B13_1023_dr",0.00151,-0.000191,0.00321,13.5,-1.71,28.6

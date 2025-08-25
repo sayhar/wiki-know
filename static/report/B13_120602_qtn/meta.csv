@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct"
+"B13_120602_qtn","question","0","YY","yy","Control","How.much.did.you.learn.from.Wikipedia.this.year?",4.19,0.2,0.0196,8.36,6135400,3937,1386295200,"banner","B13_120602_qtn",0.000626,-0.000446,0.0017,7.45,-5.31,20.2

@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct","campaign"
+"1369231210","landing","1","US","yy","Jelly/Megan","OMP",10.1,0.44,-5.61,25.8,123068,295,1291683600,"landing","1369231210landing",-0.0321,-0.114,0.0499,-30.7,-109,47.6,NA

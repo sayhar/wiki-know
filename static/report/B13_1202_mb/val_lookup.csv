@@ -1,0 +1,3 @@
+"value","description"
+"Lower.string.(3,5,10,.20,50,100)","Lower string (3,5,10, 20,50,100)"
+"Higher.string.(3,10,.20,.30,.50,100)","Higher string (3,10, 20, 30, 50,100)"

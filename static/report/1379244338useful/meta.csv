@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct","campaign"
+"1379244338","useful","0","GB","en","useful","nouseful",13.4,0.015,6.41,20.4,1248500,1530,1353841200,"banner","1379244338useful",0.00317,-0.000142,0.00649,17.2,-0.773,35.2,NA

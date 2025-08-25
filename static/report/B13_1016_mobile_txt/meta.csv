@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct"
+"B13_1016_mobile_txt","mobile","0","YY","yy","longer.message.(with.highlight)","short.message",283,7.3e-44,258,309,1182000,578,1381924800,"banner","B13_1016_mobile_txt",0.003,0.0022,0.00381,129,94.8,164
